@@ -1,0 +1,33 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "e-distribuzione Monitor",
+        "description": "Configura il monitoraggio degli eventi e-distribuzione vicino a un punto geografico.",
+        "data": {
+          "reference_latitude": "Latitudine riferimento",
+          "reference_longitude": "Longitudine riferimento",
+          "place_name": "Nome paese o zona",
+          "radius_km": "Raggio in km",
+          "scan_interval": "Intervallo controllo in minuti",
+          "notify_initial_events": "Genera eventi anche al primo avvio"
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opzioni e-distribuzione Monitor",
+        "data": {
+          "reference_latitude": "Latitudine riferimento",
+          "reference_longitude": "Longitudine riferimento",
+          "place_name": "Nome paese o zona",
+          "radius_km": "Raggio in km",
+          "scan_interval": "Intervallo controllo in minuti",
+          "notify_initial_events": "Genera eventi anche al primo avvio"
+        }
+      }
+    }
+  }
+}

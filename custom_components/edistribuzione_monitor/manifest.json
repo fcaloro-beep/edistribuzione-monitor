@@ -1,0 +1,10 @@
+{
+  "domain": "edistribuzione_monitor",
+  "name": "e-distribuzione Monitor",
+  "codeowners": [],
+  "config_flow": true,
+  "documentation": "https://github.com/fcaloro-beep/edistribuzione-monitor",
+  "iot_class": "cloud_polling",
+  "requirements": [],
+  "version": "0.1.0"
+}

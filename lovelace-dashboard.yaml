@@ -1,0 +1,114 @@
+views:
+  - title: E-Distribuzione - Guasti
+    path: e-distribuzione-guasti
+    type: sections
+    sections:
+      - type: grid
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: markdown
+                title: e-distribuzione - Vetralla
+                content: >-
+                  {% set main =
+                  'sensor.e_distribuzione_vetralla_e_distribuzione_eventi_vicini'
+                  %} {% set nome = state_attr(main, 'nome_luogo') or 'Vetralla'
+                  %}
+
+                  ⚡ **Guasti:** {{
+                  states('sensor.e_distribuzione_vetralla_e_distribuzione_guasti_vicini')
+                  }}
+
+                  🛠️ **Lavori programmati:** {{
+                  states('sensor.e_distribuzione_vetralla_e_distribuzione_lavori_vicini')
+                  }}
+
+                  🏠 **Utenze coinvolte:** {{
+                  states('sensor.e_distribuzione_vetralla_e_distribuzione_utenze_coinvolte')
+                  }}
+              - type: iframe
+                title: 🗺️ Mappa eventi - raggio 50 km
+                url: /api/edistribuzione_monitor/map
+                aspect_ratio: 75%
+      - type: grid
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: e-distribuzione - Vetralla 50 km
+                entities:
+                  - entity: >-
+                      sensor.e_distribuzione_vetralla_e_distribuzione_eventi_vicini
+                    name: Eventi entro 50 km
+                  - entity: >-
+                      sensor.e_distribuzione_vetralla_e_distribuzione_guasti_vicini
+                    name: Guasti
+                  - entity: >-
+                      sensor.e_distribuzione_vetralla_e_distribuzione_lavori_vicini
+                    name: Lavori programmati
+                  - entity: >-
+                      sensor.e_distribuzione_vetralla_e_distribuzione_utenze_coinvolte
+                    name: Utenze coinvolte
+              - type: markdown
+                title: Dettaglio eventi
+                content: >-
+                  {% set eventi =
+                  state_attr('sensor.e_distribuzione_vetralla_e_distribuzione_eventi_vicini',
+                  'eventi') or [] %} {% set nome =
+                  state_attr('sensor.e_distribuzione_vetralla_e_distribuzione_eventi_vicini',
+                  'nome_luogo') or 'Vetralla' %} {% if eventi | count == 0 %}
+                  Nessun evento attivo entro 50 km da {{ nome }}. {% else %} {%
+                  for evento in eventi %} **{{ evento.tipo }} - {{ evento.zona
+                  }} ({{ evento.provincia }})**
+
+                  Utenze: {{ evento.utenti }} - Distanza: {{ evento.distanza_km
+                  }} km
+
+                  Ripristino previsto: {{ evento.ripristino }}
+
+                  Ultimo aggiornamento: {{ evento.ultimo_aggiornamento }}
+
+                  {% endfor %} {% endif %}
+      - type: grid
+        cards:
+          - type: heading
+            heading_style: title
+          - type: markdown
+            title: Eventi nel comune configurato
+            content: >-
+              {% set main =
+              'sensor.e_distribuzione_vetralla_e_distribuzione_eventi_vicini' %}
+              {% set nome = state_attr(main, 'nome_luogo') or 'Vetralla' %} {%
+              set eventi = state_attr(main, 'eventi') or [] %} {% set comune =
+              eventi | selectattr('zona', 'search', nome | upper) | list %} {%
+              set guasti = comune | selectattr('tipo', 'search', 'Guasto') |
+              list %} {% set lavori = comune | selectattr('tipo', 'search',
+              'Lavoro') | list %}
+
+              ⚡ **Guasti a {{ nome }}:** {{ guasti | count }}
+
+              🛠️ **Lavori programmati a {{ nome }}:** {{ lavori | count }}
+
+              🏠 **Utenze coinvolte a {{ nome }}:** {{ comune |
+              map(attribute='utenti') | sum }}
+
+              {% if comune | count == 0 %}
+
+              Nessun evento attivo nel comune di {{ nome }}.
+
+              {% else %}
+
+              {% for evento in comune %}
+
+              **{{ evento.tipo }} - {{ evento.zona }} ({{ evento.provincia }})**
+
+              Utenze: {{ evento.utenti }} - Distanza: {{ evento.distanza_km }}
+              km
+
+              Ripristino previsto: {{ evento.ripristino }}
+
+              Ultimo aggiornamento: {{ evento.ultimo_aggiornamento }}
+
+              {% endfor %}
+
+              {% endif %}
