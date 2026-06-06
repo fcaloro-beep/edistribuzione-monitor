@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/logo.jpg" alt="e-distribuzione Monitor" width="120">
+  <img src="https://raw.githubusercontent.com/fcaloro-beep/edistribuzione-monitor/main/assets/logo.png" alt="e-distribuzione Monitor" width="120">
 </p>
 
 # e-distribuzione Monitor
@@ -106,6 +106,15 @@ Un ringraziamento ad Alberto Pedron, autore del progetto Android non ufficiale [
 ## Licenza
 
 Distribuito con licenza MIT. Vedi `LICENSE`.
+
+## Logo e brand
+
+Gli asset principali sono in:
+
+- `assets/icon.png`
+- `assets/logo.png`
+- `custom_components/edistribuzione_monitor/brand/icon.png`
+- `custom_components/edistribuzione_monitor/brand/logo.png`
 
 ## Mappa
 
