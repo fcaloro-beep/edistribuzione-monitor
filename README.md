@@ -18,6 +18,24 @@ Integrazione custom per Home Assistant installabile con HACS. Monitora gli event
 - Mappa Leaflet servita da Home Assistant.
 - Attributo `eventi` sul sensore principale per Lovelace.
 
+## Screenshot
+
+### Integrazione in Home Assistant
+
+![Integrazione e-distribuzione Monitor](https://raw.githubusercontent.com/fcaloro-beep/edistribuzione-monitor/main/docs/screenshots/integration-overview.png)
+
+### Dispositivo e sensori
+
+![Dispositivo e-distribuzione Monitor](https://raw.githubusercontent.com/fcaloro-beep/edistribuzione-monitor/main/docs/screenshots/device-overview.png)
+
+### Opzioni
+
+![Opzioni e-distribuzione Monitor](https://raw.githubusercontent.com/fcaloro-beep/edistribuzione-monitor/main/docs/screenshots/options-flow.png)
+
+### Dashboard Lovelace
+
+![Dashboard e-distribuzione Monitor](https://raw.githubusercontent.com/fcaloro-beep/edistribuzione-monitor/main/docs/screenshots/dashboard-example.png)
+
 ## Sensori creati
 
 ```text
