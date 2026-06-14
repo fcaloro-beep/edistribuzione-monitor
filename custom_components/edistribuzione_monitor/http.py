@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from html import escape
 import json
 from typing import Any
 
@@ -8,7 +9,13 @@ from aiohttp import web
 from homeassistant.components.http import HomeAssistantView
 from homeassistant.core import HomeAssistant
 
-from .const import DOMAIN
+from .const import (
+    DEFAULT_PLACE_NAME,
+    DEFAULT_RADIUS_KM,
+    DEFAULT_REFERENCE_LATITUDE,
+    DEFAULT_REFERENCE_LONGITUDE,
+    DOMAIN,
+)
 
 
 def async_register_http_views(hass: HomeAssistant) -> None:
@@ -32,10 +39,10 @@ def _first_payload(hass: HomeAssistant) -> dict[str, Any]:
         "guasti": 0,
         "lavori": 0,
         "utenze_coinvolte": 0,
-        "raggio_km": 50,
-        "nome_luogo": "Vetralla",
-        "latitudine_riferimento": 42.317,
-        "longitudine_riferimento": 12.083,
+        "raggio_km": DEFAULT_RADIUS_KM,
+        "nome_luogo": DEFAULT_PLACE_NAME,
+        "latitudine_riferimento": DEFAULT_REFERENCE_LATITUDE,
+        "longitudine_riferimento": DEFAULT_REFERENCE_LONGITUDE,
         "eventi": [],
     }
 
@@ -61,21 +68,22 @@ class EDistribuzioneMapView(HomeAssistantView):
     async def get(self, request: web.Request) -> web.Response:
         payload = _first_payload(request.app["hass"])
         html = _map_html(
-            place_name=str(payload.get("nome_luogo") or "Vetralla"),
-            latitude=float(payload.get("latitudine_riferimento") or 42.317),
-            longitude=float(payload.get("longitudine_riferimento") or 12.083),
-            radius_km=float(payload.get("raggio_km") or 50),
+            place_name=str(payload.get("nome_luogo") or DEFAULT_PLACE_NAME),
+            latitude=float(payload.get("latitudine_riferimento") or DEFAULT_REFERENCE_LATITUDE),
+            longitude=float(payload.get("longitudine_riferimento") or DEFAULT_REFERENCE_LONGITUDE),
+            radius_km=float(payload.get("raggio_km") or DEFAULT_RADIUS_KM),
         )
         return web.Response(text=html, content_type="text/html")
 
 
 def _map_html(place_name: str, latitude: float, longitude: float, radius_km: float) -> str:
+    place_name_html = escape(place_name)
     return f"""<!doctype html>
 <html lang="it">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>e-distribuzione Vetralla</title>
+  <title>e-distribuzione {place_name_html}</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <style>
     html, body, #map {{ height: 100%; margin: 0; }}
@@ -118,7 +126,7 @@ def _map_html(place_name: str, latitude: float, longitude: float, radius_km: flo
   <div class="legend">
     <div class="legend-row"><span class="dot dot-fault"></span><span>Guasto</span></div>
     <div class="legend-row"><span class="dot dot-work"></span><span>Lavoro programmato</span></div>
-    <div class="legend-row"><span class="dot dot-center"></span><span>Vetralla</span></div>
+    <div class="legend-row"><span class="dot dot-center"></span><span>{place_name_html}</span></div>
     <div class="legend-row"><span style="width:16px;text-align:center;color:#1976d2;">○</span><span>Raggio {radius_km:g} km</span></div>
   </div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
